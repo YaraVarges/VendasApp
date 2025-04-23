@@ -2,7 +2,7 @@ export const products = [
   {
     id: "1",
     nome: "Camiseta Básica Branca",
-    preco: 39.9,
+    preco: 10,
     estoque: 50,
     descricao: "Camiseta unissex em algodão 100%",
     categoria: "Vestuário",
@@ -20,7 +20,7 @@ export const products = [
   {
     id: "3",
     nome: "Fone de Ouvido Bluetooth",
-    preco: 149.9,
+    preco: 20,
     estoque: 50,
     descricao: "Fone com cancelamento de ruído e microfone",
     categoria: "Acessórios",

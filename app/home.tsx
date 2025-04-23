@@ -1,4 +1,4 @@
-import { View, Text, Button, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAuth } from './contexts/AuthContext';
 import { router } from 'expo-router';
 
@@ -7,24 +7,32 @@ export default function Home() {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#191F26', }}>
-            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+            <Text style={{ fontSize: 20, marginBottom: 10, color: 'white' }}>
                 Bem-vindo(a), {user?.name}!
             </Text>
+            <View style={{ flex: 1, flexDirection: 'column', padding: 20 }}>
 
-            <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
-                <Button title="Clientes" onPress={() => router.push('/clients')} />
-                <Button title="Produtos" onPress={() => router.push('/products')} />
+                <TouchableOpacity style={styles.button} onPress={() => router.push('/clients')} >
+                    <Text style={styles.buttonText}>Clientes</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => router.push('/products')} >
+                    <Text style={styles.buttonText}>Produtos</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => router.push('/sales/clients')} >
+                    <Text style={styles.buttonText}>Novo Pedido</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => router.push('/sales/historico')} >
+                    <Text style={styles.buttonText}>Pedidos Realizados</Text>
+                </TouchableOpacity>
             </View>
 
-            <Button
-                title="Nova Venda"
-                onPress={() => router.push('/sales/new')}
-            />
-            <View style={{ marginTop: 20 }}>
-                <Button title="Sair" onPress={logout} />
-            </View>
 
-
+            <TouchableOpacity style={styles.button} onPress={logout} >
+                <Text style={styles.buttonText}>Sair</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -32,6 +40,6 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     title: { fontSize: 24, marginBottom: 20 },
-    button: { backgroundColor: '#007AFF', padding: 15, borderRadius: 10 },
-    buttonText: { color: 'white', fontSize: 18 },
+    button: { backgroundColor: '#80F26D', padding: 15, borderRadius: 10 },
+    buttonText: { color: '#212E40', fontSize: 18 },
 });
