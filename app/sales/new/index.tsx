@@ -1,17 +1,15 @@
-import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
+// app/sales/new.tsx
+import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { useCart } from '../../contexts/CartContext';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { products } from '../../data/products';
-import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import PrecoFormatado from '@/app/components/PrecoFormat';
 import { clients } from '../../data/clients';
 import { useEffect } from 'react';
 
-//FUNCAO DE NOVA VENDA
 export default function NewSale() {
-    const { items, addItem, removeItem, setQuantity, total, setClienteSelecionado  } = useCart();
+    const { items, addItem, removeItem, setQuantity, total, setClienteSelecionado } = useCart();
     const router = useRouter();
-
     const screenWidth = Dimensions.get('window').width;
     const width50 = screenWidth * 0.50;
 
@@ -30,77 +28,43 @@ export default function NewSale() {
     }, [clienteSelecionado]);
 
     return (
-
-
-
-        <View style={{ flex: 1, padding: 16 }}>
+        <View style={styles.container}>
             {clienteSelecionado && (
-                <View style={{ marginBottom: 16 }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Cliente:</Text>
-                    <Text>{clienteSelecionado.razaosocial}</Text>
-                    <Text>{clienteSelecionado.cnpjcpf}</Text>
+                <View style={styles.clienteBox}>
+                    <Text style={styles.clienteTitle}>Cliente selecionado:</Text>
+                    <Text style={styles.clienteText}>{clienteSelecionado.razaosocial}</Text>
+                    <Text style={styles.clienteText}>{clienteSelecionado.cnpjcpf}</Text>
+                    <TouchableOpacity onPress={() => router.replace('/sales/clients')} style={styles.trocarBotao}>
+                        <Text style={styles.trocarTexto}>Trocar</Text>
+                    </TouchableOpacity>
                 </View>
             )}
 
-            <TouchableOpacity
-                onPress={() => router.replace('/sales/clients')}
-                style={{ backgroundColor: '#eee', padding: 8, borderRadius: 8 }}
-            >
-                <Text style={{ color: '#333' }}>Trocar</Text>
-            </TouchableOpacity>
+            <Text style={styles.titulo}>Selecione os Produtos</Text>
 
-
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Selecione os Produtos</Text>
-
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{ flex: 1 }}
-            >
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
                 <FlatList
                     data={products}
                     keyExtractor={item => item.id}
+                    contentContainerStyle={{ paddingBottom: 20 }}
                     renderItem={({ item }) => {
                         const quantity = getQuantity(item.id);
 
                         return (
-                            <View
-                                style={{
-                                    flex: 1,
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    padding: 16,
-                                    borderBottomWidth: 1,
-                                    borderColor: '#80F26D',
-                                }}
-                            >
-                                <View style={{ flexDirection: 'column', justifyContent: 'space-between', maxWidth: width50, }}>
-                                    <Text>{item.id} - {item.nome}</Text>
-                                    <Text>Estoque: {item.estoque}</Text>
-                                    <Text>Preço: <PrecoFormatado valor={item.preco}>RS</PrecoFormatado></Text>
+                            <View style={styles.produtoCard}>
+                                <View style={[styles.produtoInfo, { maxWidth: width50 }]}>
+                                    <Text style={styles.produtoNome}>{item.id} - {item.nome}</Text>
+                                    <Text style={styles.produtoLabel}>Estoque: {item.estoque}</Text>
+                                    <Text style={styles.produtoLabel}>Preço: <PrecoFormatado valor={item.preco} /></Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                    <TouchableOpacity
-                                        onPress={() => removeItem(item.id)}
-                                        style={{
-                                            backgroundColor: '#80F26D',
-                                            padding: 10,
-                                            borderRadius: 4,
-                                            marginRight: 10
-                                        }}
-                                    >
-                                        <Text>-</Text>
+                                <View style={styles.quantidadeBox}>
+                                    <TouchableOpacity onPress={() => removeItem(item.id)} style={styles.botaoAlterar}>
+                                        <Text style={styles.botaoTexto}>-</Text>
                                     </TouchableOpacity>
 
                                     <TextInput
-                                        style={{
-                                            borderWidth: 1,
-                                            borderColor: '#ccc',
-                                            padding: 5,
-                                            width: 50,
-                                            textAlign: 'center',
-                                            marginRight: 10
-                                        }}
+                                        style={styles.inputQuantidade}
                                         keyboardType="numeric"
                                         value={String(quantity)}
                                         onChangeText={(text) => {
@@ -111,15 +75,8 @@ export default function NewSale() {
                                         }}
                                     />
 
-                                    <TouchableOpacity
-                                        onPress={() => addItem(item)}
-                                        style={{
-                                            backgroundColor: '#80F26D',
-                                            padding: 10,
-                                            borderRadius: 4,
-                                        }}
-                                    >
-                                        <Text>+</Text>
+                                    <TouchableOpacity onPress={() => addItem(item)} style={styles.botaoAlterar}>
+                                        <Text style={styles.botaoTexto}>+</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -128,24 +85,113 @@ export default function NewSale() {
                 />
             </KeyboardAvoidingView>
 
-
-            <View style={{ marginTop: 20 }}>
-                <Text style={{ fontSize: 18 }}>Total: R$ {total.toFixed(2)}</Text>
-                <TouchableOpacity
-                    style={{
-                        backgroundColor: '#80F26D',
-                        padding: 16,
-                        borderRadius: 8,
-                        marginTop: 16,
-                        alignItems: 'center'
-                    }}
-                    onPress={() => router.push('/sales/confirm')}
-                >
-                    <Text style={{ color: '#191F26', fontWeight: 'bold' }}>Finalizar Venda</Text>
+            <View style={styles.totalContainer}>
+                <Text style={styles.totalTexto}>Total: R$ {total.toFixed(2)}</Text>
+                <TouchableOpacity style={styles.finalizarBotao} onPress={() => router.push('/sales/confirm')}>
+                    <Text style={styles.finalizarTexto}>Finalizar Venda</Text>
                 </TouchableOpacity>
             </View>
         </View>
-
-
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#191F26',
+    },
+    clienteBox: {
+        backgroundColor: '#212E40',
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 16,
+        borderColor: '#80F26D',
+        borderWidth: 1,
+    },
+    clienteTitle: {
+        fontWeight: 'bold',
+        color: '#80F26D',
+        marginBottom: 4,
+    },
+    clienteText: {
+        color: '#fff',
+    },
+    trocarBotao: {
+        marginTop: 10,
+        backgroundColor: '#80F26D',
+        padding: 8,
+        borderRadius: 6,
+        alignSelf: 'flex-start'
+    },
+    trocarTexto: {
+        color: '#212E40',
+        fontWeight: 'bold',
+    },
+    titulo: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#80F26D',
+        marginBottom: 10,
+    },
+    produtoCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 16,
+        borderBottomWidth: 1,
+        borderColor: '#80F26D',
+    },
+    produtoInfo: {
+        flexDirection: 'column',
+    },
+    produtoNome: {
+        color: '#fff',
+        fontWeight: 'bold',
+        marginBottom: 4,
+    },
+    produtoLabel: {
+        color: '#ccc',
+    },
+    quantidadeBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    botaoAlterar: {
+        backgroundColor: '#80F26D',
+        padding: 10,
+        borderRadius: 4,
+        marginHorizontal: 5,
+    },
+    botaoTexto: {
+        color: '#212E40',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    inputQuantidade: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 5,
+        width: 50,
+        textAlign: 'center',
+        backgroundColor: '#fff',
+    },
+    totalContainer: {
+        marginTop: 20,
+    },
+    totalTexto: {
+        fontSize: 18,
+        color: '#fff',
+    },
+    finalizarBotao: {
+        backgroundColor: '#80F26D',
+        padding: 16,
+        borderRadius: 8,
+        marginTop: 16,
+        alignItems: 'center'
+    },
+    finalizarTexto: {
+        color: '#191F26',
+        fontWeight: 'bold',
+    },
+});

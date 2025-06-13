@@ -1,4 +1,5 @@
-import { View, Text, Button, TextInput, } from 'react-native';
+// app/sales/confirm.tsx
+import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useCart } from '../contexts/CartContext';
 import PrecoFormatado from '../components/PrecoFormat';
 import { useRouter } from 'expo-router';
@@ -6,7 +7,6 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//FUNÇÃO DE CONFIRMAÇÃO DA VENDA
 export default function ConfirmSale() {
     const {
         items,
@@ -23,7 +23,6 @@ export default function ConfirmSale() {
     const router = useRouter();
 
     const handleConfirm = async () => {
-        //Inserir função de salvar venda
         try {
             const venda = {
                 cliente: {
@@ -32,7 +31,6 @@ export default function ConfirmSale() {
                     fantasia: clienteSelecionado?.fantasia,
                     cnpjcpf: clienteSelecionado?.cnpjcpf,
                     endereco: clienteSelecionado?.endereco,
-
                 },
                 produtos: items.map(item => ({
                     nome: item.product.nome,
@@ -51,91 +49,44 @@ export default function ConfirmSale() {
             await AsyncStorage.setItem('@vendas', JSON.stringify(vendas));
 
             alert('Venda registrada com sucesso!');
-
             router.push('/home');
-
             clearCart();
         } catch (error) {
             console.error('Erro ao salvar venda:', error);
             alert('Erro ao registrar a venda');
         }
-        /*clearCart();
-        alert('Venda registrada com sucesso!');
-
-        router.push('/home');
-        */
     };
 
     const handleSharePDF = async () => {
         const html = `
-        <html>
-            <head>
-            <style>
-                body {
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                }
-                h1 {
-                text-align: center;
-                margin-bottom: 24px;
-                }
-                table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 24px;
-                }
-                th, td {
-                border: 1px solid #ccc;
-                padding: 8px;
-                text-align: left;
-                }
-                th {
-                background-color: #f0f0f0;
-                }
-                .total {
-                font-weight: bold;
-                text-align: right;
-                }
-            </style>
-            </head>
-            <body>
-            <h1>Resumo da Venda</h1>
-            <h3>Dados do Cliente:</h3>
-            <h4>Nome Fantasia: ${clienteSelecionado?.fantasia}</h4>
-            <h4>Razão Social: ${clienteSelecionado?.razaosocial}</h4>
-            <h4>CNPJ/CPF: ${clienteSelecionado?.cnpjcpf}</h4>
-            <h4>Endereço: ${clienteSelecionado?.endereco}</h4>
-            <table>
-                <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Preço Unit.</th>
-                    <th>Total</th>
-                </tr>
-                </thead>
-                <tbody>
-                ${items.map(item => `
-                    <tr>
-                    <td>${item.product.nome}</td>
-                    <td>${item.quantity}</td>
-                    <td>R$ ${item.product.preco.toFixed(2)}</td>
-                    <td>R$ ${(item.product.preco * item.quantity).toFixed(2)}</td>
-                    </tr>
-                `).join('')}
-                </tbody>
-            </table>
-
-            <p class="total">Subtotal: R$ ${subtotal.toFixed(2)}</p>
-            <p class="total">Desconto R$: ${discountValue.toFixed(2)} (${discountPercentage.toFixed(1)}%)</p>
-            <p class="total"><strong>Total Final: R$ ${total.toFixed(2)}</strong></p>
-            </body>
-        </html>
-        `;
+        <html><head><style>
+            body { font-family: Arial; padding: 20px; }
+            h1 { text-align: center; margin-bottom: 24px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+            th { background-color: #f0f0f0; }
+            .total { font-weight: bold; text-align: right; }
+        </style></head><body>
+        <h1>Resumo da Venda</h1>
+        <h3>Dados do Cliente:</h3>
+        <h4>Nome Fantasia: ${clienteSelecionado?.fantasia}</h4>
+        <h4>Razão Social: ${clienteSelecionado?.razaosocial}</h4>
+        <h4>CNPJ/CPF: ${clienteSelecionado?.cnpjcpf}</h4>
+        <h4>Endereço: ${clienteSelecionado?.endereco}</h4>
+        <table><thead><tr>
+            <th>Produto</th><th>Quantidade</th><th>Preço Unit.</th><th>Total</th>
+        </tr></thead><tbody>
+        ${items.map(item => `
+            <tr><td>${item.product.nome}</td><td>${item.quantity}</td><td>R$ ${item.product.preco.toFixed(2)}</td><td>R$ ${(item.product.preco * item.quantity).toFixed(2)}</td></tr>
+        `).join('')}
+        </tbody></table>
+        <p class="total">Subtotal: R$ ${subtotal.toFixed(2)}</p>
+        <p class="total">Desconto R$: ${discountValue.toFixed(2)} (${discountPercentage.toFixed(1)}%)</p>
+        <p class="total"><strong>Total Final: R$ ${total.toFixed(2)}</strong></p>
+        </body></html>`;
 
         try {
             const { uri } = await Print.printToFileAsync({ html });
-
             const canShare = await Sharing.isAvailableAsync();
             if (canShare) {
                 await Sharing.shareAsync(uri, {
@@ -148,56 +99,127 @@ export default function ConfirmSale() {
         } catch (error) {
             console.error('Erro ao gerar/compartilhar PDF:', error);
         }
-    }
+    };
 
     return (
-        <View style={{ padding: 16 }}>
-            <Text>Cliente: {clienteSelecionado?.fantasia || clienteSelecionado?.razaosocial}</Text>
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.clienteNome}>Cliente: {clienteSelecionado?.fantasia || clienteSelecionado?.razaosocial}</Text>
 
-
-            <Text style={{ fontSize: 20, marginBottom: 16 }}>Resumo da Venda</Text>
+            <Text style={styles.titulo}>Resumo da Venda</Text>
 
             {items.map(item => (
-                <View key={item.product.id} style={{ marginBottom: 8 }}>
-                    <Text>{item.product.nome} x {item.quantity}</Text>
-                    <Text>R$ <PrecoFormatado valor={item.product.preco * item.quantity}>RS</PrecoFormatado></Text>
+                <View key={item.product.id} style={styles.itemBox}>
+                    <Text style={styles.itemText}>{item.product.nome} x {item.quantity}</Text>
+                    <Text style={styles.itemValor}><PrecoFormatado valor={item.product.preco * item.quantity} /></Text>
                 </View>
             ))}
 
-            <Text style={{ fontSize: 16, fontWeight: 'bold', paddingBottom: 10 }}>Sub Total: R$ {subtotal.toFixed(2)}</Text>
+            <Text style={styles.subtotal}>Sub Total: R$ {subtotal.toFixed(2)}</Text>
 
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-            }}>
-                <View>
-                    <Text style={{ fontSize: 18 }}>Desconto R$</Text>
+            <View style={styles.descontoContainer}>
+                <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Desconto R$</Text>
                     <TextInput
                         placeholder="R$"
                         keyboardType="numeric"
                         value={discountValue.toString()}
                         onChangeText={text => setDiscountValue(Number(text.replace(',', '.')))}
-                        style={{ borderWidth: 1, padding: 8, marginBottom: 20, }}
+                        style={styles.input}
                     />
                 </View>
-                <View>
-                    <Text style={{ fontSize: 18 }}>Desconto %</Text>
+                <View style={styles.inputGroup}>
+                    <Text style={styles.label}>Desconto %</Text>
                     <TextInput
                         placeholder="%"
                         keyboardType="numeric"
                         value={discountPercentage.toString()}
                         onChangeText={text => setDiscountPercentage(Number(text.replace(',', '.')))}
-                        style={{ borderWidth: 1, padding: 8, marginBottom: 20 }}
+                        style={styles.input}
                     />
                 </View>
             </View>
 
-            <Text style={{ fontSize: 18, fontWeight: 'bold', paddingBottom: 10 }}>Total Final: R$ {total.toFixed(2)}</Text>
+            <Text style={styles.total}>Total Final: R$ {total.toFixed(2)}</Text>
 
-            <Button title="Compartilhar em PDF" onPress={handleSharePDF} />
-            <View style={{ paddingBottom: 10 }}></View>
-            <Button title="Confirmar Venda" onPress={handleConfirm} />
-        </View>
+            <TouchableOpacity style={styles.botao} onPress={handleSharePDF}>
+                <Text style={styles.botaoTexto}>Compartilhar em PDF</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.botao} onPress={handleConfirm}>
+                <Text style={styles.botaoTexto}>Confirmar Venda</Text>
+            </TouchableOpacity>
+        </ScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        backgroundColor: '#191F26',
+    },
+    clienteNome: {
+        color: '#fff',
+        fontSize: 16,
+        marginBottom: 12,
+    },
+    titulo: {
+        fontSize: 20,
+        color: '#80F26D',
+        fontWeight: 'bold',
+        marginBottom: 16,
+    },
+    itemBox: {
+        marginBottom: 8,
+    },
+    itemText: {
+        color: '#fff',
+    },
+    itemValor: {
+        color: '#ccc',
+    },
+    subtotal: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 10,
+    },
+    descontoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 16,
+    },
+    inputGroup: {
+        alignItems: 'center',
+    },
+    label: {
+        fontSize: 16,
+        color: '#fff',
+        marginBottom: 4,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: '#fff',
+        padding: 8,
+        borderRadius: 6,
+        width: 100,
+    },
+    total: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#80F26D',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    botao: {
+        backgroundColor: '#80F26D',
+        padding: 14,
+        borderRadius: 8,
+        marginBottom: 12,
+        alignItems: 'center',
+    },
+    botaoTexto: {
+        fontWeight: 'bold',
+        color: '#191F26',
+    },
+});
