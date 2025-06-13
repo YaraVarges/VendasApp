@@ -47,7 +47,7 @@ export default function ListaProducts() {
                         onPress={() => router.push(`/products/${item.id}`)}
                         style={styles.card}
                     >
-                        <Text style={styles.cardTitle}>{item.id} - {item.nome}</Text>
+                        <Text style={styles.cardTitle}>{item.nome}</Text>
                         <Text style={styles.cardText}>EAN: {item.codigoEAN}</Text>
                         <Text style={styles.cardText}>Preço: <PrecoFormatado valor={item.preco}></PrecoFormatado></Text>
                         <Text style={styles.cardText}>Estoque: {item.estoque}</Text>

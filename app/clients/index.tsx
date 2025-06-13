@@ -47,7 +47,7 @@ export default function ListaClients() {
                         onPress={() => router.push(`/clients/${item.id}`)}
                         style={styles.card}
                     >
-                        <Text style={styles.cardTitle}>Fantasia: {item.fantasia}</Text>
+                        <Text style={styles.cardTitle}>{item.fantasia}</Text>
                         <Text style={styles.cardText}>Razão Social: {item.razaosocial}</Text>
                         <Text style={styles.cardText}>CNPJ/CPF: {item.cnpjcpf}</Text>
                     </Pressable>

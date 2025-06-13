@@ -179,4 +179,13 @@ export const products = [
     categoria: "Vestuário",
     codigoEAN: "7891234560020",
   },
+  {
+    id: "21",
+    nome: "Produto",
+    preco: 22.0,
+    estoque: 50,
+    descricao: "Descrição",
+    categoria: "Vestuário",
+    codigoEAN: "7891234560020",
+  },
 ];

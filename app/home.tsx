@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { useLocalSearchParams, Link } from 'expo-router';
+import PrecoFormatado from './components/PrecoFormat';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,7 +14,7 @@ export default function Home() {
     const [totalVendas, setTotalVendas] = useState(0);
     const [quantidadeVendas, setQuantidadeVendas] = useState(0);
     const [progressoMeta, setProgressoMeta] = useState(0);
-    const META_MENSAL = 500000; 
+    const META_MENSAL = 400000; 
 
     useFocusEffect(
     React.useCallback(() => {
@@ -38,11 +39,23 @@ export default function Home() {
     }, [])
     );
 
+    function getMesAnoAtual() {
+        const agora = new Date();
+        const meses = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        const mes = meses[agora.getMonth()];
+        const ano = agora.getFullYear();
+        return `${mes}, ${ano}`;
+    }
+
+
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Distribuidora Razão Social</Text>
+                <Text style={styles.headerTitle}>Distribuidora Tech</Text>
                 <Text style={styles.headerSubtitle}>Bem vindo(a), {user?.name}!</Text>
             </View>
 
@@ -80,8 +93,10 @@ export default function Home() {
             </View>
 
             <View style={styles.goalContainer}>
-                <Text style={styles.statLabel}>Meta Mensal</Text>
-                <Text style={styles.statLabel}>Junho, 2025</Text>
+                <Text style={styles.statLabel}>Meta Mensal: <PrecoFormatado valor={META_MENSAL}></PrecoFormatado></Text>
+                <Text style={styles.statLabel}>Ticket Médio: <PrecoFormatado valor={totalVendas/quantidadeVendas}></PrecoFormatado></Text>
+
+                <Text style={styles.statLabel}>{getMesAnoAtual()}</Text>
 
                 <View style={styles.progressBarBackground}>
                 <View style={[styles.progressBarFill, { width: `${progressoMeta}%` }]} />

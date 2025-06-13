@@ -58,6 +58,11 @@ export default function ConfirmSale() {
     };
 
     const handleSharePDF = async () => {
+    try {
+        const vendasJSON = await AsyncStorage.getItem('@vendas');
+        const vendas = vendasJSON ? JSON.parse(vendasJSON) : [];
+        const numeroPedido = vendas.length + 1;
+
         const html = `
         <html><head><style>
             body { font-family: Arial; padding: 20px; }
@@ -67,7 +72,7 @@ export default function ConfirmSale() {
             th { background-color: #f0f0f0; }
             .total { font-weight: bold; text-align: right; }
         </style></head><body>
-        <h1>Resumo da Venda</h1>
+        <h1>Pedido Nº ${numeroPedido}</h1>
         <h3>Dados do Cliente:</h3>
         <h4>Nome Fantasia: ${clienteSelecionado?.fantasia}</h4>
         <h4>Razão Social: ${clienteSelecionado?.razaosocial}</h4>
@@ -85,21 +90,22 @@ export default function ConfirmSale() {
         <p class="total"><strong>Total Final: R$ ${total.toFixed(2)}</strong></p>
         </body></html>`;
 
-        try {
-            const { uri } = await Print.printToFileAsync({ html });
-            const canShare = await Sharing.isAvailableAsync();
-            if (canShare) {
-                await Sharing.shareAsync(uri, {
-                    mimeType: 'application/pdf',
-                    dialogTitle: 'Compartilhar PDF',
-                });
-            } else {
-                alert('Compartilhamento não disponível neste dispositivo');
-            }
-        } catch (error) {
-            console.error('Erro ao gerar/compartilhar PDF:', error);
+        const { uri } = await Print.printToFileAsync({ html });
+
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+            await Sharing.shareAsync(uri, {
+                mimeType: 'application/pdf',
+                dialogTitle: 'Compartilhar PDF',
+            });
+        } else {
+            alert('Compartilhamento não disponível neste dispositivo');
         }
-    };
+    } catch (error) {
+        console.error('Erro ao gerar/compartilhar PDF:', error);
+    }
+};
+
 
     return (
         <ScrollView
