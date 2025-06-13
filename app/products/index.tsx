@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import { Link, useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { products } from '../data/products';
 import PrecoFormatado from '../components/PrecoFormat';
 
@@ -20,14 +20,20 @@ export default function ListaProducts() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Produtos</Text>
+
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                    <Ionicons name="arrow-back" size={24} color="#80F26D" />
+                </TouchableOpacity>
+                <Text style={styles.title}>Produtos</Text>
+            </View>
 
             {/* Barra de busca com ícone de lupa */}
             <View style={styles.searchContainer}>
                 <Feather name="search" size={20} color="#999" style={styles.searchIcon} />
                 <TextInput
                     style={styles.searchInput}
-                    placeholder="Buscar Produtos..."
+                    placeholder="Buscar Produto"
                     value={search}
                     onChangeText={setSearch}
                 />
@@ -50,10 +56,6 @@ export default function ListaProducts() {
                 contentContainerStyle={styles.list}
                 showsVerticalScrollIndicator={false}
             />
-
-            <Link href="/home" style={styles.backLink}>
-                <Text>Voltar para Home</Text>
-            </Link>
         </View>
     );
 }
@@ -64,8 +66,16 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#191F26',
     },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center', 
+        height: 40,
+        marginBottom: 16,
+        position: 'relative',
+    },
     title: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
         color: "#80F26D",
@@ -74,11 +84,6 @@ const styles = StyleSheet.create({
         padding: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#eee'
-    },
-    backLink: {
-        marginTop: 20,
-        color: '#0066cc',
-        textAlign: 'center'
     },
     searchContainer: {
         flexDirection: 'row',
@@ -123,5 +128,9 @@ const styles = StyleSheet.create({
     },
     list: {
         paddingBottom: 20,
+    },
+    backButton: {
+        position: 'absolute',
+        left: 0,
     },
 });

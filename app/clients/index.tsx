@@ -27,12 +27,6 @@ export default function ListaClients() {
                 <Text style={styles.title}>Clientes</Text>
             </View>
 
-            {/*<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                <Ionicons name="arrow-back" size={24} color="#80F26D" />
-            </TouchableOpacity>
-
-            <Text style={styles.title}>Clientes</Text>*/}
-            
 
             {/* Barra de busca com ícone de lupa */}
             <View style={styles.searchContainer}>
@@ -73,16 +67,16 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center', // centraliza o título horizontalmente
-  height: 40,
-  marginBottom: 16,
-  position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center', 
+        height: 40,
+        marginBottom: 16,
+        position: 'relative',
     },
     title: {
         fontSize: 20,
-  fontWeight: 'bold',
-  color: '#80F26D',
+        fontWeight: 'bold',
+        color: '#80F26D',
     },
     clientItem: {
         padding: 15,
@@ -135,6 +129,6 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: 'absolute',
-  left: 0,
+        left: 0,
     },
 });
