@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { Link, useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { clients } from '../data/clients';
-
 
 
 export default function ListaClients() {
@@ -13,20 +12,34 @@ export default function ListaClients() {
     // Filtra os clientes conforme o texto digitado
     const filteredClients = clients.filter(client =>
         client.fantasia.toLowerCase().includes(search.toLowerCase()) ||
-        client.cnpjcpf.toLowerCase().includes(search.toLowerCase())
+        client.cnpjcpf.toLowerCase().includes(search.toLowerCase()) ||
+        client.razaosocial.toLowerCase().includes(search.toLowerCase())
     );
 
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Clientes</Text>
+
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                    <Ionicons name="arrow-back" size={24} color="#80F26D" />
+                </TouchableOpacity>
+                <Text style={styles.title}>Clientes</Text>
+            </View>
+
+            {/*<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                <Ionicons name="arrow-back" size={24} color="#80F26D" />
+            </TouchableOpacity>
+
+            <Text style={styles.title}>Clientes</Text>*/}
+            
 
             {/* Barra de busca com ícone de lupa */}
             <View style={styles.searchContainer}>
                 <Feather name="search" size={20} color="#999" style={styles.searchIcon} />
                 <TextInput
                     style={styles.searchInput}
-                    placeholder="Buscar cliente..."
+                    placeholder="Buscar cliente"
                     value={search}
                     onChangeText={setSearch}
                 />
@@ -48,10 +61,6 @@ export default function ListaClients() {
                 contentContainerStyle={styles.list}
                 showsVerticalScrollIndicator={false}
             />
-
-            <Link href="/home" style={styles.backLink}>
-                <Text>Voltar para Home</Text>
-            </Link>
         </View>
     );
 }
@@ -62,21 +71,23 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#191F26',
     },
+    header: {
+        flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center', // centraliza o título horizontalmente
+  height: 40,
+  marginBottom: 16,
+  position: 'relative',
+    },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: "#80F26D",
+        fontSize: 20,
+  fontWeight: 'bold',
+  color: '#80F26D',
     },
     clientItem: {
         padding: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#eee'
-    },
-    backLink: {
-        marginTop: 20,
-        color: '#0066cc',
-        textAlign: 'center'
     },
     searchContainer: {
         flexDirection: 'row',
@@ -121,5 +132,9 @@ const styles = StyleSheet.create({
     },
     list: {
         paddingBottom: 20,
+    },
+    backButton: {
+        position: 'absolute',
+  left: 0,
     },
 });

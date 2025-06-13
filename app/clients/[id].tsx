@@ -23,7 +23,7 @@ export default function DetalhesCliente() {
             <Text style={styles.text}>Razão Social: {cliente.razaosocial}</Text>
             <Text style={styles.text}>CNPJ/CPF: {cliente.cnpjcpf}</Text>
             <Text style={styles.text}>Endereço: {cliente.endereco}</Text>
-            {/* Aqui você pode buscar mais dados do cliente com base no ID */}
+
 
 
             <Link href="/clients" style={styles.backLink}>

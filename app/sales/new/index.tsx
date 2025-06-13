@@ -6,6 +6,7 @@ import { products } from '../../data/products';
 import PrecoFormatado from '@/app/components/PrecoFormat';
 import { clients } from '../../data/clients';
 import { useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function NewSale() {
     const { items, addItem, removeItem, setQuantity, total, setClienteSelecionado } = useCart();

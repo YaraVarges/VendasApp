@@ -102,7 +102,10 @@ export default function ConfirmSale() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+            style={{ flex: 1, backgroundColor: '#191F26' }}
+            contentContainerStyle={styles.container}
+        >
             <Text style={styles.clienteNome}>Cliente: {clienteSelecionado?.fantasia || clienteSelecionado?.razaosocial}</Text>
 
             <Text style={styles.titulo}>Resumo da Venda</Text>
@@ -155,7 +158,9 @@ export default function ConfirmSale() {
 const styles = StyleSheet.create({
     container: {
         padding: 16,
-        backgroundColor: '#191F26',
+        paddingBottom: 40,
+        flexGrow: 1,
+        justifyContent: 'flex-start',
     },
     clienteNome: {
         color: '#fff',

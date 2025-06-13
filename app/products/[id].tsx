@@ -11,7 +11,7 @@ export default function DetalhesProduto() {
     if (!produto) {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>produto não encontrado</Text>
+                <Text style={styles.title}>Produto não encontrado</Text>
                 <Link href="/products"><Text>Voltar</Text></Link>
             </View>
         );
@@ -27,8 +27,6 @@ export default function DetalhesProduto() {
             <Text style={styles.text}>Código de Barras: {produto.codigoEAN}</Text>
             <Text style={styles.text}>Preço: <PrecoFormatado valor={produto.preco}></PrecoFormatado></Text>
             <Text style={styles.text}>Estoque: {produto.estoque}</Text>
-            {/* Aqui você pode buscar mais dados do produto com base no ID */}
-
 
             <Link href="/products" style={styles.backLink}>
                 <Text>Voltar para produtos</Text>

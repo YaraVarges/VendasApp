@@ -32,14 +32,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
+  /*useEffect(() => {
+  const loadUser = async () => {
+    const storedUser = await SecureStore.getItemAsync('user'); // modificada
+    if (storedUser) setUser(JSON.parse(storedUser));
+    setIsLoading(false);
+  };
+  loadUser();
+}, []);*/
+
   useEffect(() => {
-    const loadUser = async () => {
-      const storedUser = await SecureStore.getItemAsync('user');
-      if (storedUser) setUser(JSON.parse(storedUser));
+  const loadUser = async () => {
+      //ignora SecureStore e simula login
+      setUser({ email: 'yaravarges@gmail.com', name: 'Yara Varges'});
       setIsLoading(false);
     };
     loadUser();
   }, []);
+
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, logout }}>
