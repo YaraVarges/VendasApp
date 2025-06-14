@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PrecoFormatado from '../components/PrecoFormat';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -28,13 +29,11 @@ export default function HistoricoVendas() {
         style={styles.card}
         onPress={() => router.push(`/sales/${item.id}`)}
     >
-        <Text style={styles.title}>Pedido #{item.id}</Text>
-        <Text style={styles.label}>Cliente: <Text style={styles.value}>{item.cliente?.fantasia}</Text></Text>
-        <Text style={styles.label}>Razão Social: <Text style={styles.value}>{item.cliente?.razaosocial}</Text></Text>
-
-        <Text style={styles.subtotal}>Subtotal: R$ {item.subtotal.toFixed(2)}</Text>
-        <Text style={styles.desconto}>Desconto: R$ {item.desconto.toFixed(2)}</Text>
-        <Text style={styles.total}>Total: R$ {item.total.toFixed(2)}</Text>
+        <Text style={styles.title}>Pedido Nº {item.id}</Text>
+        <Text style={styles.label}>Cliente: <Text style={styles.value}>{item.cliente?.razaosocial}</Text></Text>
+        <Text style={styles.subtotal}>Subtotal: R$ <PrecoFormatado valor={item.subtotal.toFixed(2)}/></Text>
+        <Text style={styles.desconto}>Desc.: R$ <PrecoFormatado valor={item.desconto.toFixed(2)}/></Text>
+        <Text style={styles.total}>Total: R$ <PrecoFormatado valor={item.total.toFixed(2)}/></Text>
     </TouchableOpacity>
     );
 
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: '#ccc',
-        fontSize: 14,
+        fontSize: 16,
     },
     value: {
         color: '#fff',
@@ -113,13 +112,16 @@ const styles = StyleSheet.create({
     subtotal: {
         marginTop: 8,
         color: '#ccc',
+        fontSize: 16,
     },
     desconto: {
         color: '#ccc',
+        fontSize: 16,
     },
     total: {
         marginTop: 4,
         fontWeight: 'bold',
         color: '#80F26D',
+        fontSize: 16,
     },
 });

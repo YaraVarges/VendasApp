@@ -28,13 +28,16 @@ export default function DetalhesProduto() {
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.label}>ID: <Text style={styles.value}>{produto.id}</Text></Text>
                 <Text style={styles.labelMax}><Text style={styles.value}>{produto.nome}</Text></Text>
-                <Text style={styles.labelMax}>Preço: <Text style={styles.value}><PrecoFormatado valor={produto.preco} /></Text></Text>
-                <Text style={styles.labelMax}>Estoque: <Text style={styles.value}>{produto.estoque} un</Text></Text>
+                <Text style={styles.label}>ID: <Text style={styles.value}>{produto.id}</Text></Text>
+                <Text style={styles.label}>EAN: <Text style={styles.value}>{produto.codigoEAN}</Text></Text>
                 <Text style={styles.label}>Descrição: <Text style={styles.value}>{produto.descricao}</Text></Text>
                 <Text style={styles.label}>Categoria: <Text style={styles.value}>{produto.categoria}</Text></Text>
-                <Text style={styles.label}>Código de Barras: <Text style={styles.value}>{produto.codigoEAN}</Text></Text>
+                
+            </View>
+            <View style={styles.card}>
+                <Text style={styles.labelMax}>Estoque: <Text style={styles.value}>{produto.estoque} un</Text></Text>
+                <Text style={styles.labelMax}>Preço: <Text style={styles.value}><PrecoFormatado valor={produto.preco}/></Text></Text>
             </View>
 
         </View>
@@ -64,6 +67,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#80F26D',
         borderWidth: 1,
+        marginBottom: 10,
     },
     label: {
         fontSize: 16,

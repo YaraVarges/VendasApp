@@ -82,13 +82,23 @@ carregarVenda();
   if (!venda) return <Text style={styles.loading}>Carregando detalhes...</Text>;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#80F26D" />
-      </TouchableOpacity>
+    <View contentContainerStyle={styles.scrollContent} style={styles.scroll}>
+      
+      <View style={styles.header}>
+        <View style={styles.side}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="#80F26D" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.center}>
+          <Text style={styles.title}>Detalhes do Pedido #{venda.id}</Text>
+        </View>
+        <View style={styles.side} />
+      </View>
 
-      <Text style={styles.title}>Detalhes do Pedido {venda.id}</Text>
-
+    
+    <ScrollView contentContainerStyle={styles.scrollContent} style={styles.scroll}>
+ 
       <View style={styles.section}>
         <Text style={styles.label}>Fantasia: <Text style={styles.value}>{venda.cliente.fantasia}</Text></Text>
         <Text style={styles.label}>Razão Social: <Text style={styles.value}>{venda.cliente.razaosocial}</Text></Text>
@@ -114,6 +124,7 @@ carregarVenda();
         <Text style={styles.buttonText}>Compartilhar em PDF</Text>
       </TouchableOpacity>
     </ScrollView>
+    </View>
   );
 }
 
@@ -123,20 +134,45 @@ const styles = StyleSheet.create({
     backgroundColor: '#191F26',
     flex: 1, 
   },
+  scroll: {
+    flex: 1,
+    backgroundColor: '#191F26',
+  },
+  scrollContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
   loading: {
     color: '#fff',
     textAlign: 'center',
     marginTop: 40,
   },
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 10,
+  marginTop: 20,
+  marginBottom: 10,
+},
+side: {
+  width: 32, 
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+center: {
+  flex: 1,
+  alignItems: 'center',
+},
+title: {
+  color: '#80F26D',
+  fontSize: 18,
+  fontWeight: 'bold',
+  textAlign: 'center',
+},
   backButton: {
     marginBottom: 20,
-  },
-  title: {
-    color: '#80F26D',
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+    zIndex: 1,
   },
   section: {
     marginBottom: 16,

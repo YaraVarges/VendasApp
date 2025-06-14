@@ -29,11 +29,17 @@ export default function DetalhesCliente() {
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.label}>ID: <Text style={styles.value}>{cliente.id}</Text></Text>
+                <Text style={styles.titleMin}>Identificação</Text>
                 <Text style={styles.label}>Fantasia: <Text style={styles.value}>{cliente.fantasia}</Text></Text>
                 <Text style={styles.label}>Razão Social: <Text style={styles.value}>{cliente.razaosocial}</Text></Text>
                 <Text style={styles.label}>CNPJ/CPF: <Text style={styles.value}>{cliente.cnpjcpf}</Text></Text>
-                <Text style={styles.label}>Endereço: <Text style={styles.value}>{cliente.endereco}</Text></Text>
+            </View>
+            <View style={styles.card}>
+                <Text style={styles.titleMin}>Endereço</Text>
+                <Text style={styles.label}>Logradouro: <Text style={styles.value}>{cliente.endereco}</Text></Text>
+                <Text style={styles.label}>Bairro: <Text style={styles.value}>{cliente.bairro}</Text></Text>
+                <Text style={styles.label}>Cidade: <Text style={styles.value}>{cliente.cidade}</Text></Text>
+                <Text style={styles.label}>Estado: <Text style={styles.value}>{cliente.estado}</Text></Text>
             </View>
 
         </View>
@@ -57,9 +63,16 @@ const styles = StyleSheet.create({
         color: '#80F26D',
         marginLeft: 10,
     },
+    titleMin: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#80F26D',
+        marginBottom: 10,
+    },
     card: {
         backgroundColor: '#212E40',
         padding: 20,
+        marginBottom: 10,
         borderRadius: 10,
         borderColor: '#80F26D',
         borderWidth: 1,

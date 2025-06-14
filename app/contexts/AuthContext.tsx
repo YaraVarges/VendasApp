@@ -32,15 +32,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
-  /*useEffect(() => {
-  const loadUser = async () => {
-    const storedUser = await SecureStore.getItemAsync('user'); // modificada
-    if (storedUser) setUser(JSON.parse(storedUser));
-    setIsLoading(false);
-  };
-  loadUser();
-}, []);*/
-
   useEffect(() => {
   const loadUser = async () => {
       //ignora SecureStore e simula login
