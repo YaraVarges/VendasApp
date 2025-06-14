@@ -23,23 +23,21 @@ export default function HistoricoVendas() {
         carregarVendas();
     }, []);
 
-    const renderItem = ({ item, index }: { item: any; index: number }) => (
-        <View style={styles.card}>
-            <Text style={styles.title}>Pedido #{index + 1}</Text>
-            <Text style={styles.label}>Cliente: <Text style={styles.value}>{item.cliente?.fantasia || 'Não informado'}</Text></Text>
-            <Text style={styles.label}>Razão Social: <Text style={styles.value}>{item.cliente?.razaosocial || 'Não informado'}</Text></Text>
+    const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity
+        style={styles.card}
+        onPress={() => router.push(`/sales/${item.id}`)}
+    >
+        <Text style={styles.title}>Pedido #{item.id}</Text>
+        <Text style={styles.label}>Cliente: <Text style={styles.value}>{item.cliente?.fantasia}</Text></Text>
+        <Text style={styles.label}>Razão Social: <Text style={styles.value}>{item.cliente?.razaosocial}</Text></Text>
 
-            {item.produtos.map((prod: any, i: number) => (
-                <Text key={i} style={styles.produto}>
-                    - {prod.nome} x {prod.quantidade} = R$ {prod.total.toFixed(2)}
-                </Text>
-            ))}
-
-            <Text style={styles.subtotal}>Subtotal: R$ {item.subtotal.toFixed(2)}</Text>
-            <Text style={styles.desconto}>Desconto: R$ {item.desconto.toFixed(2)}</Text>
-            <Text style={styles.total}>Total: R$ {item.total.toFixed(2)}</Text>
-        </View>
+        <Text style={styles.subtotal}>Subtotal: R$ {item.subtotal.toFixed(2)}</Text>
+        <Text style={styles.desconto}>Desconto: R$ {item.desconto.toFixed(2)}</Text>
+        <Text style={styles.total}>Total: R$ {item.total.toFixed(2)}</Text>
+    </TouchableOpacity>
     );
+
 
     return (
         <View style={styles.container}>

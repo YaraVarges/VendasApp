@@ -24,37 +24,42 @@ export default function ConfirmSale() {
 
     const handleConfirm = async () => {
         try {
-            const venda = {
-                cliente: {
-                    id: clienteSelecionado?.id,
-                    razaosocial: clienteSelecionado?.razaosocial,
-                    fantasia: clienteSelecionado?.fantasia,
-                    cnpjcpf: clienteSelecionado?.cnpjcpf,
-                    endereco: clienteSelecionado?.endereco,
-                },
-                produtos: items.map(item => ({
-                    nome: item.product.nome,
-                    preco: item.product.preco,
-                    quantidade: item.quantity,
-                    total: item.product.preco * item.quantity
-                })),
-                subtotal,
-                desconto: discountValue,
-                total
-            };
+        const vendasExistentes = await AsyncStorage.getItem('@vendas');
+    const vendas = vendasExistentes ? JSON.parse(vendasExistentes) : [];
 
-            const vendasExistentes = await AsyncStorage.getItem('@vendas');
-            const vendas = vendasExistentes ? JSON.parse(vendasExistentes) : [];
-            vendas.push(venda);
-            await AsyncStorage.setItem('@vendas', JSON.stringify(vendas));
+    const novaVendaId = vendas.length + 1; 
 
-            alert('Venda registrada com sucesso!');
-            router.push('/home');
-            clearCart();
-        } catch (error) {
-            console.error('Erro ao salvar venda:', error);
-            alert('Erro ao registrar a venda');
-        }
+
+    const venda = {
+        id: novaVendaId,
+        cliente: {
+                id: clienteSelecionado?.id,
+                razaosocial: clienteSelecionado?.razaosocial,
+                fantasia: clienteSelecionado?.fantasia,
+                cnpjcpf: clienteSelecionado?.cnpjcpf,
+                endereco: clienteSelecionado?.endereco,
+            },
+            produtos: items.map(item => ({
+                nome: item.product.nome,
+                preco: item.product.preco,
+                quantidade: item.quantity,
+                total: item.product.preco * item.quantity
+            })),
+            subtotal,
+            desconto: discountValue,
+            total
+    };
+
+    vendas.push(venda);
+    await AsyncStorage.setItem('@vendas', JSON.stringify(vendas));
+    alert('Venda registrada com sucesso!');
+        clearCart();
+        router.push('/home'); 
+        clearCart();
+    } catch (error) {
+        console.error('Erro ao salvar venda:', error);
+        alert('Erro ao registrar a venda');
+    }
     };
 
     const handleSharePDF = async () => {
@@ -104,7 +109,7 @@ export default function ConfirmSale() {
     } catch (error) {
         console.error('Erro ao gerar/compartilhar PDF:', error);
     }
-};
+    };
 
 
     return (

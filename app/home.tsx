@@ -51,7 +51,6 @@ export default function Home() {
     }
 
 
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.header}>
