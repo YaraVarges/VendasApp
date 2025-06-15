@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { products } from '../data/products';
 import PrecoFormatado from '../components/PrecoFormat';
@@ -10,7 +10,6 @@ export default function ListaProducts() {
     const [search, setSearch] = useState('');
     const router = useRouter();
     //console.log("ROUTER:", router);
-    // Filtra os clientes conforme o texto digitado
     const filteredProducts = products.filter(product =>
         product.nome.toLowerCase().includes(search.toLowerCase()) ||
         product.categoria.toLowerCase().includes(search.toLowerCase()) ||
@@ -28,7 +27,6 @@ export default function ListaProducts() {
                 <Text style={styles.title}>Produtos</Text>
             </View>
 
-            {/* Barra de busca com ícone de lupa */}
             <View style={styles.searchContainer}>
                 <Feather name="search" size={20} color="#999" style={styles.searchIcon} />
                 <TextInput
@@ -38,7 +36,7 @@ export default function ListaProducts() {
                     onChangeText={setSearch}
                 />
             </View>
-            {/* Lista de clientes com navegação */}
+
             <FlatList
                 data={filteredProducts}
                 keyExtractor={(item) => item.id}

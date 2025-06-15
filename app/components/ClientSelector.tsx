@@ -1,4 +1,3 @@
-// components/ClientSelector.tsx
 import { FlatList, TouchableOpacity, Text, Modal, View, TextInput } from 'react-native';
 import { useState } from 'react';
 import { clients } from '../data/clients';

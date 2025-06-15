@@ -1,5 +1,4 @@
-// app/sales/confirm.tsx
-import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useCart } from '../contexts/CartContext';
 import PrecoFormatado from '../components/PrecoFormat';
 import { useRouter } from 'expo-router';

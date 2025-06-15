@@ -82,7 +82,7 @@ carregarVenda();
   if (!venda) return <Text style={styles.loading}>Carregando detalhes...</Text>;
 
   return (
-    <View contentContainerStyle={styles.scrollContent} style={styles.scroll}>
+    <View style={styles.scroll}>
       
       <View style={styles.header}>
         <View style={styles.side}>
@@ -91,7 +91,7 @@ carregarVenda();
           </TouchableOpacity>
         </View>
         <View style={styles.center}>
-          <Text style={styles.title}>Detalhes do Pedido #{venda.id}</Text>
+          <Text style={styles.title}>Detalhes do Pedido Nº {venda.id}</Text>
         </View>
         <View style={styles.side} />
       </View>

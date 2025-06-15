@@ -1,4 +1,3 @@
-// contexts/SalesContext.tsx
 import { createContext, useState, useContext } from 'react';
 
 type Sale = {

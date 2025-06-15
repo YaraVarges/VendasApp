@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     console.log('Tentando login com:', email, password);
-    if (email === 'yaravarges@gmail.com' && password === '123') {
+    if (email === 'yaravarges@gmail.com' && password === '1234') {
       const userData = { email, name: 'Yara Varges' };
       setUser(userData);
       await SecureStore.setItemAsync('user', JSON.stringify(userData));
@@ -32,14 +32,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
+ /*{//login teste web}
   useEffect(() => {
-  const loadUser = async () => {
+    const loadUser = async () => {
       //ignora SecureStore e simula login
-      setUser({ email: 'yaravarges@gmail.com', name: 'Yara Varges'});
+      setUser({ email: 'yaravarges@gmail.com', name: 'Yara Varges' });
       setIsLoading(false);
     };
     loadUser();
   }, []);
+*/
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const userData = await SecureStore.getItemAsync('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+      setIsLoading(false);
+    };
+    loadUser();
+  }, []);
+
 
 
   return (

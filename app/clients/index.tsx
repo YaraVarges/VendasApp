@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { clients } from '../data/clients';
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center', 
+        justifyContent: 'center',
         height: 40,
         marginBottom: 16,
         position: 'relative',
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: '#212E40',
         borderRadius: 10,
-        borderWidth: 2, 
+        borderWidth: 2,
         borderStyle: 'solid',
         borderColor: '#89BF80',
         padding: 15,

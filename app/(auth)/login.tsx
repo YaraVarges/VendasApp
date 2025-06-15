@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { View, TextInput, Button, Alert, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Alert, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
+import { SafeContainer } from '../components/SafeContainer';
 import { router } from 'expo-router';
 
 export default function Login() {
@@ -20,42 +21,51 @@ export default function Login() {
             Alert.alert('Erro', 'Falha no login');
         }
     };
-
+    /*
+        useEffect(() => {
+            if (user) {
+                router.replace('/home');
+            }
+        }, [user]);
+    */
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Vendas App</Text>
-            <Text style={styles.subtitle}>Acesse sua conta</Text>
+        <SafeContainer>
+            <View style={styles.container}>
+                <Text style={styles.title}>Vendas App</Text>
+                <Text style={styles.subtitle}>Acesse sua conta</Text>
 
-            <View style={styles.divider} />
+                <View style={styles.divider} />
 
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-                style={styles.input}
-                placeholderTextColor="#999"
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-            />
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholderTextColor="#999"
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                />
 
-            <View style={styles.divider} />
+                <View style={styles.divider} />
 
-            <Text style={styles.label}>Senha</Text>
-            <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholder="Digite sua senha"
-                placeholderTextColor="#999"
-            />
+                <Text style={styles.label}>Senha</Text>
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    placeholder="Digite sua senha"
+                    placeholderTextColor="#999"
+                />
 
-            <View style={styles.divider} />
-            <TouchableOpacity style={styles.button} onPress={handleLogin} >
-                <Text style={styles.buttonText}>Entrar</Text>
-            </TouchableOpacity>
-        </View>
+                <View style={styles.divider} />
+                <TouchableOpacity style={styles.button} onPress={handleLogin} >
+                    <Text style={styles.buttonText}>Entrar</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeContainer>
+
     );
 
 

@@ -1,4 +1,3 @@
-// components/ClientCard.jsx
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function ClientCard({

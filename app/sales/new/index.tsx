@@ -1,4 +1,3 @@
-// app/sales/new.tsx
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { useCart } from '../../contexts/CartContext';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -6,7 +5,6 @@ import { products } from '../../data/products';
 import PrecoFormatado from '@/app/components/PrecoFormat';
 import { clients } from '../../data/clients';
 import { useEffect } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function NewSale() {
     const { items, addItem, removeItem, setQuantity, total, setClienteSelecionado } = useCart();

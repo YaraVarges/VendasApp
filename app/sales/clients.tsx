@@ -1,4 +1,3 @@
-// app/sales/clients.tsx
 import { View, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { clients } from '../data/clients';
 import { useRouter } from 'expo-router';

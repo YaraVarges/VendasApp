@@ -1,42 +1,42 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, } from 'react-native';
 import { useAuth } from './contexts/AuthContext';
+import { SafeContainer } from './components/SafeContainer';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useLocalSearchParams, Link } from 'expo-router';
-import PrecoFormatado from './components/PrecoFormat';
-import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'; import PrecoFormatado from './components/PrecoFormat';
+
 
 export default function Home() {
     const { user, logout } = useAuth();
     const [totalVendas, setTotalVendas] = useState(0);
     const [quantidadeVendas, setQuantidadeVendas] = useState(0);
     const [progressoMeta, setProgressoMeta] = useState(0);
-    const META_MENSAL = 400000; 
+    const META_MENSAL = 100000;
 
     useFocusEffect(
-    React.useCallback(() => {
-        const carregarTotais = async () => {
-        try {
-            const vendasJson = await AsyncStorage.getItem('@vendas');
-            const vendas = vendasJson ? JSON.parse(vendasJson) : [];
+        React.useCallback(() => {
+            const carregarTotais = async () => {
+                try {
+                    const vendasJson = await AsyncStorage.getItem('@vendas');
+                    const vendas = vendasJson ? JSON.parse(vendasJson) : [];
 
-            const total = vendas.reduce((soma: number, venda: any) => soma + venda.total, 0);
-            setTotalVendas(total);
-            setQuantidadeVendas(vendas.length);
+                    const total = vendas.reduce((soma: number, venda: any) => soma + venda.total, 0);
+                    setTotalVendas(total);
+                    setQuantidadeVendas(vendas.length);
 
-            const progresso = (total / META_MENSAL) * 100;
-            setProgressoMeta(progresso > 100 ? 100 : progresso); 
-            
-        } catch (error) {
-            console.error('Erro ao carregar vendas:', error);
-        }
-        };
+                    const progresso = (total / META_MENSAL) * 100;
+                    setProgressoMeta(progresso > 100 ? 100 : progresso);
 
-        carregarTotais();
-    }, [])
+                } catch (error) {
+                    console.error('Erro ao carregar vendas:', error);
+                }
+            };
+
+            carregarTotais();
+        }, [])
     );
 
     function getMesAnoAtual() {
@@ -52,63 +52,67 @@ export default function Home() {
 
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>Distribuidora Tech</Text>
-                <Text style={styles.headerSubtitle}>Bem vindo(a), {user?.name}!</Text>
-            </View>
-
-            <TouchableOpacity style={styles.mainButton} onPress={() => router.push('/sales/clients')}>
-                <Ionicons name="cart" size={24} color="#212E40" style={{ marginRight: 10 }} />
-                <Text style={styles.mainButtonText}>Novo Pedido</Text>
-            </TouchableOpacity>
-
-            <View style={styles.grid}>
-                <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/clients')}>
-                    <Text style={styles.gridButtonText}>Clientes</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/products')}>
-                    <Text style={styles.gridButtonText}>Produtos</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.gridButton} onPress={() => {}}>
-                    <Text style={styles.gridButtonText}>Sincronizar Dados</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/sales/historico')}>
-                    <Text style={styles.gridButtonText}>Histórico de Vendas</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.statsContainer}>
-                <View style={styles.statBox}>
-                    <Text style={styles.statLabel}>Total em Vendas</Text>
-                    <Text style={styles.statValue}>
-                        R$ {totalVendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                    </Text>
+        <SafeContainer>
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Distribuidora Tech</Text>
+                    <Text style={styles.headerSubtitle}>Bem vindo(a), {user?.name}!</Text>
                 </View>
-                <View style={styles.statBox}>
-                    <Text style={styles.statLabel}>Quant. de Vendas</Text>
-                    <Text style={styles.statValue}>{quantidadeVendas}</Text>
+
+                <TouchableOpacity style={styles.mainButton} onPress={() => router.push('/sales/clients')}>
+                    <Ionicons name="cart" size={24} color="#212E40" style={{ marginRight: 10 }} />
+                    <Text style={styles.mainButtonText}>Novo Pedido</Text>
+                </TouchableOpacity>
+
+                <View style={styles.grid}>
+                    <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/clients')}>
+                        <Text style={styles.gridButtonText}>Clientes</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/products')}>
+                        <Text style={styles.gridButtonText}>Produtos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.gridButton} onPress={() => { }}>
+                        <Text style={styles.gridButtonText}>Sincronizar Dados</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.gridButton} onPress={() => router.push('/sales/historico')}>
+                        <Text style={styles.gridButtonText}>Histórico de Vendas</Text>
+                    </TouchableOpacity>
                 </View>
-            </View>
 
-            <View style={styles.goalContainer}>
-                <Text style={styles.statLabel}>Meta Mensal: <PrecoFormatado valor={META_MENSAL}></PrecoFormatado></Text>
-                <Text style={styles.statLabel}>Ticket Médio: <PrecoFormatado valor={totalVendas/quantidadeVendas}></PrecoFormatado></Text>
-
-                <Text style={styles.statLabel}>{getMesAnoAtual()}</Text>
-
-                <View style={styles.progressBarBackground}>
-                <View style={[styles.progressBarFill, { width: `${progressoMeta}%` }]} />
+                <View style={styles.statsContainer}>
+                    <View style={styles.statBox}>
+                        <Text style={styles.statLabel}>Total em Vendas</Text>
+                        <Text style={styles.statValue}>
+                            R$ {totalVendas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        </Text>
+                    </View>
+                    <View style={styles.statBox}>
+                        <Text style={styles.statLabel}>Quant. de Vendas</Text>
+                        <Text style={styles.statValue}>{quantidadeVendas}</Text>
+                    </View>
                 </View>
-                <Text style={styles.progressLabel}>{Math.round(progressoMeta)}%</Text>
 
-                
-            </View>
+                <View style={styles.goalContainer}>
+                    <Text style={styles.statLabel}>Meta Mensal: <PrecoFormatado valor={META_MENSAL}></PrecoFormatado></Text>
+                    <Text style={styles.statLabel}>Ticket Médio: <PrecoFormatado valor={quantidadeVendas > 0 ? totalVendas / quantidadeVendas : 0}></PrecoFormatado></Text>
 
-            <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-                <Text style={styles.logoutButtonText}>Sair</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                    <Text style={styles.statLabel}>{getMesAnoAtual()}</Text>
+
+                    <View style={styles.progressBarBackground}>
+                        <View style={[styles.progressBarFill, { width: `${progressoMeta}%` }]} />
+                    </View>
+                    <Text style={styles.progressLabel}>{Math.round(progressoMeta)}%</Text>
+
+
+                </View>
+
+                <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+                    <Text style={styles.logoutButtonText}>Sair</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeContainer>
+
+
     );
 }
 
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         gap: 10,
         marginBottom: 20,
-        
+
     },
     gridButton: {
         backgroundColor: '#80F26D',
@@ -179,14 +183,14 @@ const styles = StyleSheet.create({
         width: '48%',
         padding: 15,
         borderRadius: 10,
-        borderColor:'#80F26D',
+        borderColor: '#80F26D',
         borderWidth: 1,
     },
     statLabel: {
         color: 'white',
         fontSize: 14,
         marginBottom: 5,
-        
+
     },
     statValue: {
         color: '#80F26D',
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 10,
         marginBottom: 20,
-        borderColor:'#80F26D',
+        borderColor: '#80F26D',
         borderWidth: 1,
     },
     progressBarBackground: {
